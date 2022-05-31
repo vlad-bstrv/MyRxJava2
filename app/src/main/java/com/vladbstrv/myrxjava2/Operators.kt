@@ -13,7 +13,7 @@ class Operators {
     }
     class Consumer(val producer: Producer) {
         fun exec() {
-            execDistinct()
+            execFilter()
         }
 
         fun execTake() {
@@ -39,6 +39,16 @@ class Operators {
         fun execDistinct() {
             producer.createJust()
                 .distinct()
+                .subscribe({ s ->
+                    Log.d(TAG, "onNext: $s")
+                }, {
+                    Log.d(TAG, "onError: ${it.message}")
+                })
+        }
+
+        fun execFilter() {
+            producer.createJust()
+                .filter() { it.toInt() > 1 }
                 .subscribe({ s ->
                     Log.d(TAG, "onNext: $s")
                 }, {
