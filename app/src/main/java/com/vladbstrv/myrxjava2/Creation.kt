@@ -2,6 +2,7 @@ package com.vladbstrv.myrxjava2
 
 import android.util.Log
 import io.reactivex.rxjava3.core.Observable
+import java.lang.RuntimeException
 import kotlin.random.Random
 
 class Creation {
@@ -18,9 +19,22 @@ class Creation {
             Thread.sleep(Random.nextLong(1000))
             return listOf(true, false, true)[Random.nextInt(2)]
         }
-        fun fromCallable() = Observable.fromCallable{
-            val result = randomResultOperation()
-            return@fromCallable result
+        fun create() = Observable.create<String>{ emitter ->
+            try {
+                for(i in 0..10) {
+                    randomResultOperation().let {
+                        if(it) {
+                            emitter.onNext("Success $i")
+                        } else {
+                            emitter.onError(RuntimeException("Error123"))
+                            return@create
+                        }
+                    }
+                }
+                emitter.onComplete()
+            } catch (t: Throwable) {
+                emitter.onError(RuntimeException("Error"))
+            }
         }
 
     }
@@ -31,7 +45,7 @@ class Creation {
     class Consumer(private val producer: Producer) {
 
         private fun execLambda() {
-            producer.fromCallable()
+            producer.create()
                 .subscribe({
                     Log.d(TAG, "onNext: $it")
                 }, {
