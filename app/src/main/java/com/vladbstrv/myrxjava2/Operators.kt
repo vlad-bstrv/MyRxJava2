@@ -13,12 +13,22 @@ class Operators {
     }
     class Consumer(val producer: Producer) {
         fun exec() {
-            execTake()
+            execMap()
         }
 
         fun execTake() {
             producer.createJust()
                 .skip(2)
+                .subscribe({ s ->
+                    Log.d(TAG, "onNext: $s")
+                }, {
+                    Log.d(TAG, "onError: ${it.message}")
+                })
+        }
+
+        fun execMap() {
+            producer.createJust()
+                .map { it + it }
                 .subscribe({ s ->
                     Log.d(TAG, "onNext: $s")
                 }, {
