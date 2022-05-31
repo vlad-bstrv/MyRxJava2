@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.startRxButton.setOnClickListener {
-            Creation().exec()
+            Operators().exec()
         }
     }
 }
