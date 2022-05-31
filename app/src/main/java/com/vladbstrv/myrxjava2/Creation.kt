@@ -16,9 +16,8 @@ class Creation {
     этом либо о каком-либо другом событии подписчика Observer */
     class Producer {
         //Создаем Observable(поток) разными способами
-        fun interval(): Observable<Long> {
-            return Observable.timer(10, TimeUnit.SECONDS)
-        }
+        fun interval() = Observable.range(1, 10)
+
     }
 
     /**Observer — интерфейс.
