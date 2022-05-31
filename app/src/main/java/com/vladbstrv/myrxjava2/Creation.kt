@@ -17,7 +17,7 @@ class Creation {
     class Producer {
         //Создаем Observable(поток) разными способами
         fun interval(): Observable<Long> {
-            return Observable.interval(1, TimeUnit.SECONDS)
+            return Observable.timer(10, TimeUnit.SECONDS)
         }
     }
 
