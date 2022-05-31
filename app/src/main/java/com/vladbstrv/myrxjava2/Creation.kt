@@ -15,8 +15,8 @@ class Creation {
     этом либо о каком-либо другом событии подписчика Observer */
     class Producer {
         //Создаем Observable(поток) разными способами
-        fun just(): Observable<String> {
-            return Observable.just("1", "2", "3")
+        fun fromIterable(): Observable<String> {
+            return Observable.fromIterable(listOf("1", "2", "3"))
         }
     }
 
@@ -46,11 +46,11 @@ class Creation {
         }
 
         fun execJust() {
-            producer.just().subscribe(stringObserver)
+            producer.fromIterable().subscribe(stringObserver)
         }
 
         private fun execLambda() {
-            producer.just()
+            producer.fromIterable()
                 .subscribe({
                     Log.d(TAG, "onNext: $it")
                 }, {
