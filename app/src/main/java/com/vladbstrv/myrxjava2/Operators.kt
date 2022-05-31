@@ -18,7 +18,7 @@ class Operators {
 
         fun execTake() {
             producer.createJust()
-                .take(3)
+                .skip(2)
                 .subscribe({ s ->
                     Log.d(TAG, "onNext: $s")
                 }, {
