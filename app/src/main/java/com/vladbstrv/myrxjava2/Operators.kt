@@ -8,12 +8,15 @@ class Operators {
     fun exec() {
         Consumer(Producer()).exec()
     }
+
     class Producer {
         fun createJust() = Observable.just("1", "2", "3", "3")
+        fun createJust2() = Observable.just("4", "5", "6")
     }
+
     class Consumer(val producer: Producer) {
         fun exec() {
-            execFilter()
+            execMerge()
         }
 
         fun execTake() {
@@ -56,7 +59,17 @@ class Operators {
                 })
         }
 
+        fun execMerge() {
+            producer.createJust()
+                .mergeWith(producer.createJust2())
+                .subscribe({ s ->
+                    Log.d(TAG, "onNext: $s")
+                }, {
+                    Log.d(TAG, "onError: ${it.message}")
+                })
         }
+
+    }
 
     companion object {
         const val TAG = "TAG"
