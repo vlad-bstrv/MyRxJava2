@@ -13,7 +13,7 @@ class Operators {
     }
     class Consumer(val producer: Producer) {
         fun exec() {
-            execMap()
+            execDistinct()
         }
 
         fun execTake() {
@@ -36,7 +36,17 @@ class Operators {
                 })
         }
 
-    }
+        fun execDistinct() {
+            producer.createJust()
+                .distinct()
+                .subscribe({ s ->
+                    Log.d(TAG, "onNext: $s")
+                }, {
+                    Log.d(TAG, "onError: ${it.message}")
+                })
+        }
+
+        }
 
     companion object {
         const val TAG = "TAG"
